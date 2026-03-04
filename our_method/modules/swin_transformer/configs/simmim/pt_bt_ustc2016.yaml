@@ -1,0 +1,40 @@
+DISTRIBUTED:
+  ENABLE: true
+  BACKEND: "nccl"
+  INIT_METHOD: "tcp://localhost:29505"
+  PORT: 29505
+DATA:
+  DATASET: ustc_tfc2016
+  BATCH_SIZE: 64
+MODEL:
+  TYPE: swin
+  NAME: swin_base_patch4_window7_224
+  DROP_PATH_RATE: 0.2
+  LAMBDA1: 0.8
+  LAMBDA2: 0.8
+  LAMBDA3: 0.8
+  LABEL:  ["Cridex", "Geodo", "Htbot", "Miuref", "Virut", "Neris", "Nsis-ay", "Shifu", "Tinba", "Zeus", "Benign"]
+  GNN:
+    SAMPLE_MODEL: 'fast'
+    EMBED_DIM: 64
+    FAST_EMBED_DIM: 128
+    NODE_SAMPLE_NUM: [448, 480, 512]
+    NUM_BLOCK: 1
+    FAST_NUM_BLOCK: 1
+    DROP_RATE: 0.2
+    ACTIVE: "leaky"
+    NEGATIVE_SLOPE: 0.2
+    HEAD_NUM: 6
+  SWIN:
+    EMBED_DIM: 128
+    DEPTHS: [ 1, 1, 9, 1]
+    NUM_HEADS: [ 4, 8, 16, 32 ]
+    WINDOW_SIZE: 8
+TRAIN:
+  EPOCHS: 100
+  WARMUP_EPOCHS: 10
+  WEIGHT_DECAY: 1e-5
+  BASE_LR: 3e-3
+  WARMUP_LR: 1e-6
+  MIN_LR: 1e-4
+  AUTO_RESUME: False

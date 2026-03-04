@@ -1,0 +1,44 @@
+DISTRIBUTED:
+  ENABLE: true
+  BACKEND: "nccl"
+  INIT_METHOD: "tcp://localhost:29502"
+  PORT: 29502
+DATA:
+  DATASET: mcfp
+  BATCH_SIZE: 64
+MODEL:
+  TYPE: swin
+  NAME: simmim_barlow_finetune
+  PRETRAINED: "/workspace/our_method/pt_output/swin_base_patch4_window7_224/default/ckpt_epoch_99.pth"
+  DROP_PATH_RATE: 0.3
+  LABEL:  ["Cridex", "Geodo", "Htbot", "Miuref", "Shifu", "Tinba", "Zeus", "Benign"]
+  NUM_CLASSES: 8
+  GNN:
+    SAMPLE_MODEL: 'fast'
+    EMBED_DIM: 64
+    FAST_EMBED_DIM: 128
+    NODE_SAMPLE_NUM: [448, 480, 512]
+    NUM_BLOCK: 1
+    FAST_NUM_BLOCK: 1
+    DROP_RATE: 0.3
+    ACTIVE: "leaky"
+    NEGATIVE_SLOPE: 0.2
+    HEAD_NUM: 6
+  SWIN:
+    EMBED_DIM: 128
+    DEPTHS: [ 1, 1, 9, 1 ]
+    NUM_HEADS: [ 4, 8, 16, 32 ]
+    WINDOW_SIZE: 8
+TRAIN:
+  EPOCHS: 50
+  WARMUP_EPOCHS: 2
+  BASE_LR: 5e-4
+  WARMUP_LR: 1e-5
+  MIN_LR: 1e-4
+  WEIGHT_DECAY: 1e-5
+  LAYER_DECAY: 0.8
+PRINT_FREQ: 100
+SAVE_FREQ: 1
+TAG: simmim_finetune__swin_base__img224_window7__800ep
+
+
